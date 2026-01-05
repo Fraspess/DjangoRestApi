@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class CustomUser(AbstractUser):
+    input_image = models.ImageField(upload_to='images/', blank=True, null=True)
     image_small = models.ImageField(upload_to='images/', blank=True, null=True)
     image_medium = models.ImageField(upload_to='images/', blank=True, null=True)
     image_large = models.ImageField(upload_to='images/', blank=True, null=True)

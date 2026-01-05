@@ -5,10 +5,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only = True)
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'password', 'email', 'image_large')
+        fields = ('id', 'username', 'password', 'email', 'input_image')
 
     def create(self,validated_data):
-        original_image = validated_data.pop('image_large', None)
+        original_image = validated_data.pop('input_image', None)
         user = CustomUser.objects.create_user(
             username = validated_data['username'],
             email = validated_data['email'],
