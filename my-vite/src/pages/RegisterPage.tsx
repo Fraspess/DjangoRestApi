@@ -156,7 +156,10 @@ const RegisterPage = () => {
                                                           getValueFromEvent={normFile}
                                                           noStyle>
                                     <Upload.Dragger accept="image/*" listType={"picture"} name="files" multiple={false}
-                                                    beforeUpload={() => {
+                                                    beforeUpload={(file) => {
+                                                        if (!file.type.startsWith("image")) {
+                                                            return
+                                                        }
                                                         return false
                                                     }}>
                                         <p className="ant-upload-drag-icon">
