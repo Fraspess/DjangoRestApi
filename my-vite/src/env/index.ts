@@ -1,4 +1,4 @@
-const SERVER_URL = import.meta.env.API_BASE_URL;
+const SERVER_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const APP_ENV = {
     SERVER_URL

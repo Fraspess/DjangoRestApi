@@ -2,13 +2,14 @@ from .models import CustomUser
 from rest_framework import serializers
 from .utils import compress_image
 class UserRegisterSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=True, write_only=True)
     password = serializers.CharField(write_only = True)
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'password', 'email', 'input_image')
+        fields = ('id', 'password', 'email','phone','image', 'username')
 
     def create(self,validated_data):
-        original_image = validated_data.pop('input_image', None)
+        original_image = validated_data.pop('image', None)
         user = CustomUser.objects.create_user(
             username = validated_data['username'],
             email = validated_data['email'],

@@ -4,13 +4,12 @@ from django.contrib.auth.models import AbstractUser
 
 
 class CustomUser(AbstractUser):
-    input_image = models.ImageField(upload_to='images/', blank=True, null=True)
     image_small = models.ImageField(upload_to='images/', blank=True, null=True)
     image_medium = models.ImageField(upload_to='images/', blank=True, null=True)
     image_large = models.ImageField(upload_to='images/', blank=True, null=True)
 
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=False, null=False)
 
     def __str__(self):
         return self.email
