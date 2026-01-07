@@ -70,15 +70,18 @@ const RegisterPage = () => {
                             <Form.Item<IRegisterUser>
                                 label={"Електронна пошта"}
                                 name={"email"}
-                                rules={[{required: true, message: 'Вкажіть пошту'}]}
+                                rules={[{required: true, message: 'Вкажіть пошту'}, {
+                                    type: 'email',
+                                    message: "Це не почта!"
+                                }, {max: 30}]}
                             >
-                                <Input />
+                                <Input/>
                             </Form.Item>
 
                             <Form.Item<IRegisterUser>
                                 label={"Ім'я користувача"}
                                 name={"username"}
-                                rules={[{required: true, message: "Вкажіть ім'я користувача"}]}
+                                rules={[{required: true, message: "Вкажіть ім'я користувача"}, {min:3, message:"Ім'я користувача повинно мати щонайменше 3 символи"}, {max: 20}]}
                             >
                                 <Input/>
                             </Form.Item>
@@ -86,7 +89,7 @@ const RegisterPage = () => {
                             <Form.Item<IRegisterUser>
                                 label={"Прізвище"}
                                 name={"lastName"}
-                                rules={[{required: true, message: 'Вкажіть прізвище'}]}
+                                rules={[{required: true, message: 'Вкажіть прізвище'}, {max:20}]}
                             >
                                 <Input/>
                             </Form.Item>
@@ -94,7 +97,7 @@ const RegisterPage = () => {
                             <Form.Item<IRegisterUser>
                                 label={"Ім'я"}
                                 name={"firstName"}
-                                rules={[{required: true, message: "Вкажіть ім'я"}]}
+                                rules={[{required: true, message: "Вкажіть ім'я"}, {max:20}]}
                             >
                                 <Input/>
                             </Form.Item>
@@ -102,7 +105,13 @@ const RegisterPage = () => {
                             <Form.Item<IRegisterUser>
                                 label={"Телефон"}
                                 name={"phoneNumber"}
-                                rules={[{required: true, message: "Вкажіть телефон"}]}
+                                rules={[{
+                                    required: true,
+                                    message: "Вкажіть телефон"
+                                }, {max: 15}, {
+                                    pattern: /^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$/,
+                                    message: "Вкажіть валідний номер телефона!"
+                                }]}
                             >
                                 <Input/>
                             </Form.Item>
@@ -110,7 +119,15 @@ const RegisterPage = () => {
                             <Form.Item<IRegisterUser>
                                 label={"Пароль"}
                                 name={"password"}
-                                rules={[{required: true, message: "Вкажіть пароль"}]}
+                                rules={[{
+                                    required: true,
+                                    message: "Вкажіть пароль"
+                                },
+                                    {max: 20, message:"Пароль не може містити більше 20 символів"},
+                                    {
+                                    pattern: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                                    message: "Пароль має містити 1 велику, 1 маленьку букву, 1 цифру і 1 спеціальний символ"
+                                }]}
                             >
                                 <Input.Password/>
                             </Form.Item>
@@ -119,7 +136,16 @@ const RegisterPage = () => {
                                 label={"Підтвердження паролю"}
                                 name={"confirmPassword"}
                                 rules={[
-                                    {required: true, message: "Вкажіть підтвердження пароль"}
+                                    {required: true, message: "Вкажіть підтвердження пароль"},
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || getFieldValue('password') === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('Паролі не збігаються!'));
+                                        },
+                                    }),
+                                    {max:20, message:"Пароль не може містити більше ніж 20 символів"}
                                 ]}
                             >
                                 <Input.Password/>
