@@ -1,30 +1,30 @@
 import {Button, Form, Input, Upload} from "antd";
 import {InboxOutlined} from '@ant-design/icons';
-import type {IRegisterUser} from "../types/IRegisterUser.ts";
+import type {IRegisterUser} from "../../types/IRegisterUser.ts";
 import axios from "axios";
-import {APP_ENV} from "../env";
+import {APP_ENV} from "../../env";
+import {useNavigate} from "react-router-dom";
 
 const RegisterPage = () => {
     const [form] = Form.useForm<IRegisterUser>();
-
+    const navigate = useNavigate();
     const onFinish = (values: IRegisterUser) => {
         if (Array.isArray(values.image)) {
-            const file: File = values.image[0].originFileObj!
-            console.log(values.image)
+            values.image = values.image[0].originFileObj
 
-            const data = new FormData();
-            data.append("first_name", values.firstName)
-            data.append("last_name", values.lastName)
-            data.append("email", values.email)
-            data.append("password", values.password)
-            data.append("phone", values.phoneNumber)
-            data.append("image", file)
-            data.append("username", values.username)
-            console.log('Success:', data);
+            // const data = new FormData();
+            // data.append("first_name", values.firstName)
+            // data.append("last_name", values.lastName)
+            // data.append("email", values.email)
+            // data.append("password", values.password)
+            // data.append("phone", values.phoneNumber)
+            // data.append("image", file)
+            // data.append("username", values.username)
+            // console.log('Success:', data);
 
-            console.log(APP_ENV.SERVER_URL)
-            axios.post(APP_ENV.SERVER_URL + "api/register/",
-                data,
+            console.log(values)
+            axios.post(APP_ENV.SERVER_URL + "api/users/register/",
+                values,
                 {
                     headers: {
                         'Content-Type':
@@ -33,6 +33,7 @@ const RegisterPage = () => {
                 }
             ).then(response => console.log(response))
                 .catch(error => console.log(error));
+            navigate("/login");
         }
 
     }
@@ -88,7 +89,7 @@ const RegisterPage = () => {
 
                             <Form.Item<IRegisterUser>
                                 label={"Прізвище"}
-                                name={"lastName"}
+                                name={"last_name"}
                                 rules={[{required: true, message: 'Вкажіть прізвище'}, {max:20}]}
                             >
                                 <Input/>
@@ -96,7 +97,7 @@ const RegisterPage = () => {
 
                             <Form.Item<IRegisterUser>
                                 label={"Ім'я"}
-                                name={"firstName"}
+                                name={"first_name"}
                                 rules={[{required: true, message: "Вкажіть ім'я"}, {max:20}]}
                             >
                                 <Input/>
@@ -104,7 +105,7 @@ const RegisterPage = () => {
 
                             <Form.Item<IRegisterUser>
                                 label={"Телефон"}
-                                name={"phoneNumber"}
+                                name={"phone"}
                                 rules={[{
                                     required: true,
                                     message: "Вкажіть телефон"
@@ -172,7 +173,7 @@ const RegisterPage = () => {
                             </Form.Item>
 
                             <Form.Item label={null}>
-                                <Button type="primary" htmlType="submit">
+                                <Button className="min-w-full" type="primary" htmlType="submit">
                                     Реєстрація
                                 </Button>
                             </Form.Item>

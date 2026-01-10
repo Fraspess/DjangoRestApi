@@ -1,12 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import {StrictMode} from 'react'
+import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import {BrowserRouter} from "react-router-dom"
+import ScrollToTop from "./functional/ScrollToTop.tsx";
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-      {/*<div className={"container mx-auto"}>*/}
-          <App />
-      {/*</div>*/}
-  </StrictMode>,
+    <StrictMode>
+        <BrowserRouter>
+            <ScrollToTop>
+                <App/>
+            </ScrollToTop>
+        </BrowserRouter>
+    </StrictMode>,
 )

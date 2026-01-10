@@ -1,11 +1,24 @@
 import './App.css';
-import RegisterPage from './pages/RegisterPage.tsx'
+import RegisterPage from './pages/register/RegisterPage.tsx'
+import {Route, Routes} from "react-router-dom";
+import DefaultLayout from "./components/layout/layout.tsx";
+import MainPage from "./pages/main/MainPage.tsx";
+import LoginPage from "./pages/login/LoginPage.tsx";
+import ProfilePage from "./pages/profile/ProfilePage.tsx";
 function App() {
 
     return (
         <>
-            <RegisterPage />
+            <Routes>
+                <Route path='/' element={<DefaultLayout/>}>
+                    <Route index element={<MainPage/>}/>
+                    <Route path='/register' element={<RegisterPage/>}/>
+                    <Route path='/login' element={<LoginPage/>}/>
+                    <Route path="/profile" element={<ProfilePage />} />
+                </Route>
+            </Routes>
         </>
     )
 }
+
 export default App

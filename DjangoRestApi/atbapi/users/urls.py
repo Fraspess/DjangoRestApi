@@ -1,6 +1,17 @@
-from django.urls import path
-from .views import RegisterView
+from rest_framework.routers import DefaultRouter
+from .views import UserViewSet
+from django.urls import path, include
+from rest_framework_simplejwt.views import TokenRefreshView
+from django.conf.urls.static import static
+from django.conf import settings
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    path('register/', RegisterView.as_view(), name='register')
+    path('', include(router.urls)),
+    # path('login/', LoginView.as_view(), name='login'),
+    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+
+urlpatterns += static(settings.IMAGES_URL, document_root=settings.IMAGES_ROOT)
