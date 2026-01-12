@@ -67,3 +67,14 @@ class LoginSerializer(serializers.ModelSerializer):
             'password',
         ]
 
+
+class ForgotPasswordSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+    class Meta:
+        model = CustomUser
+        fields = [
+            'email'
+        ]
+
+            
+
