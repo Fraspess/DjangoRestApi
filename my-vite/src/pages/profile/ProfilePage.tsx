@@ -78,15 +78,15 @@ const ProfilePage = () => {
                                         className="h-32 w-32 rounded-full object-cover border"
                                     />
 
-                        {/*            <input*/}
-                        {/*                type="file"*/}
-                        {/*                accept="image/*"*/}
-                        {/*                className="block w-full text-sm*/}
-                        {/*file:mr-4 file:rounded-md file:border-0*/}
-                        {/*file:bg-slate-100 file:px-4 file:py-2*/}
-                        {/*file:text-sm file:font-semibold*/}
-                        {/*hover:file:bg-slate-200"*/}
-                        {/*            />*/}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="block w-full text-sm
+                        file:mr-4 file:rounded-md file:border-0
+                        file:bg-slate-100 file:px-4 file:py-2
+                        file:text-sm file:font-semibold
+                        hover:file:bg-slate-200"
+                                    />
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
