@@ -1,45 +1,36 @@
 import {Button, Form, Input} from "antd";
-import type {ILoginUser} from "../../types/ILoginUser.ts";
 import axios from "axios";
 import {APP_ENV} from "../../env";
-import {useNavigate} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
+import type {IRegisterUser} from "../../types/IRegisterUser.ts";
 
-const LoginPage = () => {
-    const [form] = Form.useForm<ILoginUser>();
-    const navigate = useNavigate();
 
-    const onFinish = (values: ILoginUser) => {
-        console.log(values);
+interface IResetPasswordUser {
+    password: string
+}
 
-        axios.post(APP_ENV.SERVER_URL + "api/users/login/",
-            values,
+const ResetPasswordPage = () => {
+    const [form] = Form.useForm<IResetPasswordUser>()
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const onFinish = (values: IResetPasswordUser) => {
+        const token = searchParams.get("token");
+        const uid = searchParams.get("uid");
+        const password = values.password
+
+        axios.post(APP_ENV.SERVER_URL + "api/users/reset-password/", {password, uid, token},
             {
                 headers: {
-                    'Content-Type':
-                        'multipart/form-data',
+                    'Content-Type': 'multipart/form-data',
                 }
-            }
-        ).then(response => {
-             console.log(response)
-            if (response.status == 200) {
-                const {data} = response;
-                const refresh = data.refresh
-                localStorage.setItem("refreshToken", refresh)
-
-                 navigate("/");
-            }
-        })
-
-            .catch(error => console.log(error));
-        // navigate("/");
+            })
     }
-
     return (
         <>
             <div className={"min-h-screen xl:flex"}>
                 <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
                     <h1 className="mb-4 text-center text-4xl font-bold tracking-tight text-heading md:text-5xl lg:text-6xl">
-                        Вхід користувача
+                        Змінення пароля
                     </h1>
 
                     <div className="overflow-hidden rounded-2xl
@@ -52,19 +43,7 @@ const LoginPage = () => {
                                   layout={"vertical"}
                             >
 
-                                <Form.Item<ILoginUser>
-                                    label={"Ім'я користувача"}
-                                    name={"username"}
-                                    rules={[{required: true, message: "Вкажіть ім'я користувача"}, {
-                                        min: 3,
-                                        message: "Ім'я користувача повинно мати щонайменше 3 символи"
-                                    }, {max: 20}]}
-                                >
-                                    <Input/>
-                                </Form.Item>
-
-
-                                <Form.Item<ILoginUser>
+                                <Form.Item<IResetPasswordUser>
                                     label={"Пароль"}
                                     name={"password"}
                                     rules={[{
@@ -77,16 +56,16 @@ const LoginPage = () => {
                                             message: "Пароль має містити 1 велику, 1 маленьку букву, 1 цифру і 1 спеціальний символ"
                                         }]}
                                 >
-                                    <Input.Password/>
+                                    <Input/>
                                 </Form.Item>
 
 
                                 <Form.Item label={null}>
                                     <Button className="min-w-full" type="primary" htmlType="submit">
-                                        Вхід
+                                        Змінити пароль
                                     </Button>
                                 </Form.Item>
-                                <a href="/forgot-password">Забули пароль?</a>
+
                             </Form>
                         </div>
                     </div>
@@ -99,4 +78,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default ResetPasswordPage

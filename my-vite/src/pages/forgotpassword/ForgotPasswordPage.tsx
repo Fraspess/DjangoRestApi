@@ -1,4 +1,6 @@
 import {Button, Form, Input} from "antd";
+import {APP_ENV} from "../../env";
+import axios from "axios";
 
     interface IForgotPasswordUser{
         email:string
@@ -7,9 +9,13 @@ const ForgotPasswordPage = () => {
     const [form] = Form.useForm<IForgotPasswordUser>()
 
     const onFinish = (values : IForgotPasswordUser) => {
-        console.log(values)
+        axios.post(APP_ENV.SERVER_URL + "api/users/forgot-password/", values,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            })
     }
-
     return (
         <>
             <div className={"min-h-screen xl:flex"}>

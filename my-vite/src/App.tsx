@@ -6,6 +6,7 @@ import MainPage from "./pages/main/MainPage.tsx";
 import LoginPage from "./pages/login/LoginPage.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
 import ForgotPasswordPage from "./pages/forgotpassword/ForgotPasswordPage.tsx";
+import ResetPasswordPage from "./pages/resetpassword/ResetPasswordPage.tsx";
 function App() {
 
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route path='/login' element={<LoginPage/>}/>
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                    <Route path={`/reset-password`} element={<ResetPasswordPage />} />
                 </Route>
             </Routes>
         </>

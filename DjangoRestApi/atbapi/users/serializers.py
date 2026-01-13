@@ -55,7 +55,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
     
 
-
 class LoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
@@ -67,7 +66,6 @@ class LoginSerializer(serializers.ModelSerializer):
             'password',
         ]
 
-
 class ForgotPasswordSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     class Meta:
@@ -76,5 +74,10 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
             'email'
         ]
 
+
+class ResetPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField()
+    uid = serializers.CharField()
+    token = serializers.CharField()
             
 
