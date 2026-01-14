@@ -6,7 +6,7 @@ import type {IRegisterUser} from "../../types/IRegisterUser.ts";
 
 
 interface IResetPasswordUser {
-    password: string
+    new_password: string
 }
 
 const ResetPasswordPage = () => {
@@ -16,9 +16,11 @@ const ResetPasswordPage = () => {
     const onFinish = (values: IResetPasswordUser) => {
         const token = searchParams.get("token");
         const uid = searchParams.get("uid");
-        const password = values.password
-
-        axios.post(APP_ENV.SERVER_URL + "api/users/reset-password/", {password, uid, token},
+        const new_password = values.new_password
+        console.log(token)
+        console.log(uid)
+        console.log(new_password)
+        axios.post(APP_ENV.SERVER_URL + "api/users/reset-password/", {new_password, uid, token},
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -45,7 +47,7 @@ const ResetPasswordPage = () => {
 
                                 <Form.Item<IResetPasswordUser>
                                     label={"Пароль"}
-                                    name={"password"}
+                                    name={"new_password"}
                                     rules={[{
                                         required: true,
                                         message: "Вкажіть пароль"

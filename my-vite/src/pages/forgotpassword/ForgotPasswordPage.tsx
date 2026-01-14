@@ -1,20 +1,23 @@
 import {Button, Form, Input} from "antd";
 import {APP_ENV} from "../../env";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
     interface IForgotPasswordUser{
         email:string
     }
 const ForgotPasswordPage = () => {
     const [form] = Form.useForm<IForgotPasswordUser>()
-
+    const navigate = useNavigate();
     const onFinish = (values : IForgotPasswordUser) => {
         axios.post(APP_ENV.SERVER_URL + "api/users/forgot-password/", values,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
-            })
+            }).then(() => {
+                navigate("/success-reset-password");
+        })
     }
     return (
         <>
@@ -44,7 +47,6 @@ const ForgotPasswordPage = () => {
                                 >
                                     <Input />
                                 </Form.Item>
-
 
 
                                 <Form.Item label={null}>
