@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .serializers import RegisterSerializer, SetNewPasswordSerializer, UserSerializer, LoginSerializer, PasswordResetRequestSerializer
+from .serializers import RegisterSerializer, SetNewPasswordSerializer, UserSerializer, LoginSerializer, PasswordResetRequestSerializer,GoogleAuth
 from rest_framework import parsers
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -95,7 +95,21 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         user.save()
         return Response({"detail": "Пароль успішно змінено"}, status=status.HTTP_200_OK)
 
+    @action(detail=False, methods=['post'], url_path='google-auth', serializer_class=GoogleAuth)
+    def google_auth(self,request):
+        serializer = GoogleAuth(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        token = serializer.validated_data["token"]
+        user = serializer.get_user_info_from_token(token)
+        if not user:
+            print("INVALID TOKEN")
+            return Response({"detail" : "Невірний токен"}, status= status.HTTP_400_BAD_REQUEST)
 
+        print(user)
+
+        
+
+        
     
             
 

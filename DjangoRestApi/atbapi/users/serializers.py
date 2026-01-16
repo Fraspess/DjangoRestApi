@@ -93,6 +93,8 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+import requests
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -216,3 +218,16 @@ class SetNewPasswordSerializer(serializers.Serializer):
         user = self.validated_data['user']
         user.set_password(self.validated_data['new_password'])
         user.save()
+
+
+class GoogleAuth(serializers.Serializer):
+    token = serializers.CharField()
+
+    def get_user_info_from_token(self,access_token):
+        headers = {"Authorization" : f"Bearer {access_token}"}
+        response = requests.get("https://www.googleapis.com/oauth2/v2/userinfo",headers)
+        if response.status_code == 200:
+            user_data = response.json()
+            return user_data
+        return None
+    

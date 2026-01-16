@@ -3,6 +3,7 @@ import type {ILoginUser} from "../../types/ILoginUser.ts";
 import axios from "axios";
 import {APP_ENV} from "../../env";
 import {useNavigate} from "react-router-dom";
+import {GoogleLogin, useGoogleLogin} from "@react-oauth/google";
 
 const LoginPage = () => {
     const [form] = Form.useForm<ILoginUser>();
@@ -20,19 +21,32 @@ const LoginPage = () => {
                 }
             }
         ).then(response => {
-             console.log(response)
+            console.log(response)
             if (response.status == 200) {
                 const {data} = response;
                 const refresh = data.refresh
                 localStorage.setItem("refreshToken", refresh)
 
-                 navigate("/");
+                navigate("/");
             }
         })
 
             .catch(error => console.log(error));
         // navigate("/");
     }
+
+    const handleLoginGoogle = useGoogleLogin({
+        onSuccess: tokenResponse =>{
+            console.log(tokenResponse)
+            const token = tokenResponse.access_token
+            console.log(token)
+            axios.post(APP_ENV.SERVER_URL + "api/users/google-auth/", token)
+                .then(response => {
+                    console.log(response)
+                })
+        }
+    });
+
 
     return (
         <>
@@ -79,6 +93,7 @@ const LoginPage = () => {
                                 >
                                     <Input.Password/>
                                 </Form.Item>
+                                <a href="/forgot-password">Забули пароль?</a>`
 
 
                                 <Form.Item label={null}>
@@ -86,8 +101,22 @@ const LoginPage = () => {
                                         Вхід
                                     </Button>
                                 </Form.Item>
-                                <a href="/forgot-password">Забули пароль?</a>
+
+
+                                <div className={"mt-2"}>
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleLoginGoogle();
+                                        }}
+                                        className="bg-blue-500 hover:bg-blue-600 transition text-white font-semibold px-4 py-2 rounded w-full mt-4"
+                                    >
+                                        {'Вхід через Google'}
+                                    </button>
+                                </div>
                             </Form>
+
+
                         </div>
                     </div>
 

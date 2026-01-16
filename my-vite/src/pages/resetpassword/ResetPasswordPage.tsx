@@ -1,7 +1,7 @@
 import {Button, Form, Input} from "antd";
 import axios from "axios";
 import {APP_ENV} from "../../env";
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import type {IRegisterUser} from "../../types/IRegisterUser.ts";
 
 
@@ -12,20 +12,21 @@ interface IResetPasswordUser {
 const ResetPasswordPage = () => {
     const [form] = Form.useForm<IResetPasswordUser>()
     const [searchParams, setSearchParams] = useSearchParams()
-
-    const onFinish = (values: IResetPasswordUser) => {
+    const navigate = useNavigate();
+    const onFinish = async(values: IResetPasswordUser) => {
         const token = searchParams.get("token");
         const uid = searchParams.get("uid");
         const new_password = values.new_password
         console.log(token)
         console.log(uid)
         console.log(new_password)
-        axios.post(APP_ENV.SERVER_URL + "api/users/reset-password/", {new_password, uid, token},
+        await axios.post(APP_ENV.SERVER_URL + "api/users/reset-password/", {new_password, uid, token},
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
             })
+        navigate("/login")
     }
     return (
         <>
