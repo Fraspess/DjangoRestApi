@@ -10,12 +10,8 @@ const ForgotPasswordPage = () => {
     const [form] = Form.useForm<IForgotPasswordUser>()
     const navigate = useNavigate();
     const onFinish = async (values : IForgotPasswordUser) => {
-        await axios.post(APP_ENV.SERVER_URL + "api/users/forgot-password/", values,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            }).then(() => {
+        await axios.post(APP_ENV.SERVER_URL + "api/users/forgot-password/", values)
+            .then(() => {
                 navigate("/success-reset-password");
         })
     }

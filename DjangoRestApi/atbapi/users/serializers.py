@@ -225,7 +225,8 @@ class GoogleAuth(serializers.Serializer):
 
     def get_user_info_from_token(self,access_token):
         headers = {"Authorization" : f"Bearer {access_token}"}
-        response = requests.get("https://www.googleapis.com/oauth2/v2/userinfo",headers)
+        print("TRIGGERED")
+        response = requests.get("https://www.googleapis.com/oauth2/v2/userinfo",headers = headers)
         if response.status_code == 200:
             user_data = response.json()
             return user_data

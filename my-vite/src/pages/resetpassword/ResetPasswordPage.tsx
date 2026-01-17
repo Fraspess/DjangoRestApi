@@ -20,12 +20,7 @@ const ResetPasswordPage = () => {
         console.log(token)
         console.log(uid)
         console.log(new_password)
-        await axios.post(APP_ENV.SERVER_URL + "api/users/reset-password/", {new_password, uid, token},
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            })
+        await axios.post(APP_ENV.SERVER_URL + "api/users/reset-password/", {new_password, uid, token})
         navigate("/login")
     }
     return (

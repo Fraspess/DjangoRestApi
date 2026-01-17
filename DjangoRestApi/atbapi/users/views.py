@@ -39,7 +39,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    @action(detail=False, methods=['post'], url_path='login', serializer_class=LoginSerializer)
+    @action(detail=False, methods=['post'], url_path='login', serializer_class=LoginSerializer, parser_classes=[parsers.JSONParser])
     def login(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -67,7 +67,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
                 return Response({"detail" : "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
             
     
-    @action(detail=False, methods=['post'], url_path='forgot-password',serializer_class=PasswordResetRequestSerializer)
+    @action(detail=False, methods=['post'], url_path='forgot-password',serializer_class=PasswordResetRequestSerializer, parser_classes=[parsers.JSONParser])
     def password_reset_request(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -77,7 +77,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             status=status.HTTP_200_OK
         )
     
-    @action(detail=False, methods=['post'], url_path='reset-password', serializer_class=SetNewPasswordSerializer)
+    @action(detail=False, methods=['post'], url_path='reset-password', serializer_class=SetNewPasswordSerializer, parser_classes=[parsers.JSONParser])
     def password_reset_confirm(self, request):
         serializer = SetNewPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -95,7 +95,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         user.save()
         return Response({"detail": "Пароль успішно змінено"}, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['post'], url_path='google-auth', serializer_class=GoogleAuth)
+    @action(detail=False, methods=['post'], url_path='google-auth', serializer_class=GoogleAuth, parser_classes=[parsers.JSONParser])
     def google_auth(self,request):
         serializer = GoogleAuth(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -103,9 +103,38 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         user = serializer.get_user_info_from_token(token)
         if not user:
             print("INVALID TOKEN")
-            return Response({"detail" : "Невірний токен"}, status= status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not CustomUser.objects.filter(email=user['email']).exists():
+            new_user = CustomUser(
+                username=user['email'].split('@')[0],
+                email=user['email'],
+                first_name=user.get('given_name', ''),
+                last_name=user.get('family_name', ''),
+            )
+            new_user.set_unusable_password()
+            new_user.save()
+            user = new_user
 
-        print(user)
+            refresh = RefreshToken.for_user(user)
+            return Response(
+                {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
+                },
+                    status=status.HTTP_200_OK
+                )
+        else:
+            user = CustomUser.objects.get(email=user['email'])
+            refresh = RefreshToken.for_user(user)
+
+            return Response(
+                {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
+                },
+                    status=status.HTTP_200_OK
+                )
 
         
 
