@@ -1,6 +1,12 @@
+import io
+import os
+import uuid
+import requests
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+from .utils import compress_image
 
 from .serializers import RegisterSerializer, SetNewPasswordSerializer, UserSerializer, LoginSerializer, PasswordResetRequestSerializer,GoogleAuth
 from rest_framework import parsers
@@ -13,7 +19,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .models import CustomUser
 from django.contrib.auth.tokens import default_token_generator
-
+from PIL import Image
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
@@ -112,11 +118,28 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
                 first_name=user.get('given_name', ''),
                 last_name=user.get('family_name', ''),
             )
+
+            picture = user['picture']
+            response = requests.get(picture)
+            response.raise_for_status()
+            
+            image = io.BytesIO(response.content)
+
+            optimized, name = compress_image(image, size=(300, 300))
+            new_user.image_small.save(name, optimized, save=False)
+
+            optimized, name = compress_image(image, size=(800, 800))
+            new_user.image_medium.save(name, optimized, save=False)
+
+            optimized, name = compress_image(image, size=(1200, 1200))
+            new_user.image_large.save(name, optimized, save=False)
+            
             new_user.set_unusable_password()
             new_user.save()
             user = new_user
 
             refresh = RefreshToken.for_user(user)
+
             return Response(
                 {
                     "refresh": str(refresh),
