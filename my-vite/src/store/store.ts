@@ -6,7 +6,10 @@ import{categoryApi} from "./apis/categoryApi"
 export const store = configureStore({
     reducer: {
         [categoryApi.reducerPath]: categoryApi.reducer
-    }
+    },
+
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(categoryApi.middleware),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

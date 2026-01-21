@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {InboxOutlined} from "@ant-design/icons";
 import type {ICreateCategory} from "../../types/ICreateCategory.ts";
 import {useCreateCategoryMutation} from "../../store/apis/categoryApi.ts";
+import {serialize} from "object-to-formdata";
 
 const CreateCategoryPage = () => {
     const [form] = Form.useForm<ICreateCategory>();
@@ -15,7 +16,9 @@ const CreateCategoryPage = () => {
         try{
             values.image = values.image[0].originFileObj
             console.log(values);
-            const response = await createCategory(values).unwrap()
+
+            const formData = serialize(values)
+            const response = await createCategory(formData).unwrap()
             if (response.isSuccess) {
                 navigate("/categories");
             }

@@ -193,3 +193,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 IMAGES_URL = '/images/'
 IMAGES_ROOT = BASE_DIR / 'images'
 
+
+CATEGORY_URL = '/category_images/'
+CATEGORY_ROOT = BASE_DIR / 'category_images'
+
