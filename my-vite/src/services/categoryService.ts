@@ -30,13 +30,16 @@ export const categoryApi = createApi({
                 url: `/${id}/`,
                 method: "DELETE",
             }),
+            invalidatesTags:['Categories']
         }),
 
         getCategory: builder.query<ICategory, string>({
             query: (id) => ({
                 url: `/${id}/`,
                 method: "GET"
-            })
+            }
+            ),
+            providesTags: ['Categories']
         }),
 
         patchCategory: builder.mutation<void, ICategory>({
