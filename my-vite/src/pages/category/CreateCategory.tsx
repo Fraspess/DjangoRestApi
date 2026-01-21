@@ -1,9 +1,8 @@
 import {Button, Form, Input, Upload} from "antd";
 import {useNavigate} from "react-router-dom";
 import {InboxOutlined} from "@ant-design/icons";
-import type {ICreateCategory} from "../../types/ICreateCategory.ts";
-import {useCreateCategoryMutation} from "../../store/apis/categoryApi.ts";
-import {serialize} from "object-to-formdata";
+import type {ICreateCategory} from "../../types/category/ICreateCategory.ts";
+import {useCreateCategoryMutation} from "../../services/categoryService.ts";
 
 const CreateCategoryPage = () => {
     const [form] = Form.useForm<ICreateCategory>();
@@ -14,14 +13,11 @@ const CreateCategoryPage = () => {
     const onFinish = async(values: ICreateCategory) => {
 
         try{
-            values.image = values.image[0].originFileObj
-            console.log(values);
+            if(values.image !=null && Array.isArray(values.image) && values.image.length>0)
+                values.image = values.image[0].originFileObj!
+            await createCategory(values).unwrap()
+            navigate("/");
 
-            const formData = serialize(values)
-            const response = await createCategory(formData).unwrap()
-            if (response.isSuccess) {
-                navigate("/categories");
-            }
         }
         catch(err){
             console.log(err)
@@ -77,7 +73,7 @@ const CreateCategoryPage = () => {
                                     rules={[{required: true, message: "Вкажіть опис категорії"}, {
                                         min: 3,
                                         message: "Опис категорії повинно мати щонайменше 3 символи"
-                                    }, {max: 20}]}
+                                    }, {max: 100}]}
                                 >
                                     <Input/>
                                 </Form.Item>
@@ -108,8 +104,8 @@ const CreateCategoryPage = () => {
                                             <p className="ant-upload-drag-icon">
                                                 <InboxOutlined/>
                                             </p>
-                                            <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                                            <p className="ant-upload-hint">Support for a single or bulk upload.</p>
+                                            <p className="ant-upload-text">Нажміть або перетягніть картинку до цієї області щоб загрузити картинку</p>
+                                            <p className="ant-upload-hint"></p>
                                         </Upload.Dragger>
                                     </Form.Item>
                                 </Form.Item>

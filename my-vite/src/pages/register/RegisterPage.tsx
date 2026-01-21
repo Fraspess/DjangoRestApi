@@ -1,6 +1,6 @@
 import {Button, Form, Input, Upload} from "antd";
 import {InboxOutlined} from '@ant-design/icons';
-import type {IRegisterUser} from "../../types/IRegisterUser.ts";
+import type {IRegisterUser} from "../../types/account/IRegisterUser.ts";
 import axios from "axios";
 import {APP_ENV} from "../../env";
 import {useNavigate} from "react-router-dom";

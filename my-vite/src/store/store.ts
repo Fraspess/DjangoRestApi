@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import{categoryApi} from "./apis/categoryApi"
-
+import {categoryApi} from "../services/categoryService.ts";
 
 
 export const store = configureStore({
