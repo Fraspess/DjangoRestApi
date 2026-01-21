@@ -1,5 +1,5 @@
 import {Button, Form, Input} from "antd";
-import type {ILoginUser} from "../../types/ILoginUser.ts";
+import type {ILoginUser} from "../../types/account/ILoginUser.ts";
 import axios from "axios";
 import {APP_ENV} from "../../env";
 import {useNavigate} from "react-router-dom";

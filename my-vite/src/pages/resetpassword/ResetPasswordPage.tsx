@@ -2,7 +2,7 @@ import {Button, Form, Input} from "antd";
 import axios from "axios";
 import {APP_ENV} from "../../env";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import type {IRegisterUser} from "../../types/IRegisterUser.ts";
+import type {IRegisterUser} from "../../types/account/IRegisterUser.ts";
 
 
 interface IResetPasswordUser {

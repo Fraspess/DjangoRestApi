@@ -8,6 +8,8 @@ import ProfilePage from "./pages/profile/ProfilePage.tsx";
 import ForgotPasswordPage from "./pages/forgotpassword/ForgotPasswordPage.tsx";
 import ResetPasswordPage from "./pages/resetpassword/ResetPasswordPage.tsx";
 import SuccessPage from "./pages/forgotpassword/SuccessPage.tsx";
+import CreateCategory from "./pages/category/CreateCategory.tsx";
+import EditCategoryPage from "./pages/category/EditCategoryPage.tsx";
 function App() {
 
     return (
@@ -21,6 +23,9 @@ function App() {
                     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                     <Route path={`/reset-password`} element={<ResetPasswordPage />} />
                     <Route path="/success-reset-password" element={<SuccessPage />} />
+
+                    <Route path="/category/create" element={<CreateCategory />} />
+                    <Route path="/category/update/:id" element={<EditCategoryPage />} />
                 </Route>
             </Routes>
         </>

@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {APP_ENV} from "../../env";
 import {useState, useEffect} from "react";
-import type {IUserProfile} from "../../types/IUserProfile.ts";
+import type {IUserProfile} from "../../types/account/IUserProfile.ts";
 
 
 const ProfilePage = () => {
