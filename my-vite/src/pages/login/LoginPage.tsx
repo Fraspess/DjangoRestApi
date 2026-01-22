@@ -3,7 +3,7 @@ import type {ILoginUser} from "../../types/account/ILoginUser.ts";
 import axios from "axios";
 import {APP_ENV} from "../../env";
 import {useNavigate} from "react-router-dom";
-import {GoogleLogin, useGoogleLogin} from "@react-oauth/google";
+import {useGoogleLogin} from "@react-oauth/google";
 
 const LoginPage = () => {
     const [form] = Form.useForm<ILoginUser>();

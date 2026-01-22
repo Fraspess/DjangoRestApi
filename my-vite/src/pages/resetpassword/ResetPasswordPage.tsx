@@ -2,7 +2,6 @@ import {Button, Form, Input} from "antd";
 import axios from "axios";
 import {APP_ENV} from "../../env";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import type {IRegisterUser} from "../../types/account/IRegisterUser.ts";
 
 
 interface IResetPasswordUser {
@@ -11,7 +10,7 @@ interface IResetPasswordUser {
 
 const ResetPasswordPage = () => {
     const [form] = Form.useForm<IResetPasswordUser>()
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const navigate = useNavigate();
     const onFinish = async(values: IResetPasswordUser) => {
         const token = searchParams.get("token");

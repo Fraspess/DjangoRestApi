@@ -1,11 +1,13 @@
-import {jwtDecode} from "jwt-decode";
+import {jwtDecode, type JwtPayload} from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {APP_ENV} from "../../env";
 import {useState, useEffect} from "react";
 import type {IUserProfile} from "../../types/account/IUserProfile.ts";
 
-
+interface MyJwtPayload extends JwtPayload {
+    user_id: number;
+}
 const ProfilePage = () => {
     const navigate = useNavigate()
 
@@ -26,11 +28,10 @@ const ProfilePage = () => {
 
                     const access = data.access
 
-                    const decodedToken = jwtDecode(access)
-
-                    console.log(decodedToken)
+                    const decodedToken = jwtDecode<MyJwtPayload>(access)
 
                     const user_id = decodedToken.user_id
+
 
                     axios.get(APP_ENV.SERVER_URL + "api/users/" + user_id)
                         .then(response => {
