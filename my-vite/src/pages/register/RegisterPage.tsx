@@ -10,7 +10,8 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const onFinish = (values: IRegisterUser) => {
         if (Array.isArray(values.image)) {
-            values.image = values.image[0].originFileObj
+            if(values.image !=null && Array.isArray(values.image) && values.image.length>0)
+                values.image = values.image[0].originFileObj!
 
             // const data = new FormData();
             // data.append("first_name", values.firstName)

@@ -1,6 +1,5 @@
 import {Button, Form, Input, Upload} from "antd";
 import {InboxOutlined} from "@ant-design/icons";
-import type {ICreateCategory} from "../../types/category/ICreateCategory.ts";
 import {useGetCategoryQuery, usePatchCategoryMutation} from "../../services/categoryService.ts";
 import {useNavigate, useParams} from "react-router-dom";
 import type {ICategory} from "../../types/category/ICategory.ts";

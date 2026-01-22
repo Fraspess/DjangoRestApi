@@ -1,0 +1,28 @@
+# Python specific
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.whl
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Git and OS artifacts
+.git/
+.gitignore
+.DS_Store
+Thumbs.db
+
+# Django specific
+db.sqlite3
+*.log
+
+.env
+.env.*
+
+# Local settings
+local_settings.py
+

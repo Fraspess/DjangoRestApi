@@ -31,7 +31,7 @@ const MainPage = () => {
                 <h1 style={{fontSize: 32}}>Список категорій</h1>
             </div>
             {error ? (
-                {error}
+                <div></div>
             ) : (<div></div>)}
             {isLoading ? (
                 <div style={{textAlign: "center"}}><h1>Категорії загружаються</h1></div>
